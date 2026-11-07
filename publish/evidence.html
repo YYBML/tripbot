@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>证据附录 · Trip Bot</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #F7F7F8; color: #1a1a1a; line-height: 1.7; padding: 48px 24px 80px;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; }
+  .back { font-size: 13px; color: #666; text-decoration: none; }
+  .back:hover { color: #111; }
+  h1 { font-size: 30px; font-weight: 700; margin: 18px 0 10px; letter-spacing: -.3px; }
+  .sub { color: #666; font-size: 14px; max-width: 720px; }
+  section { margin-top: 48px; }
+  .head { display: flex; align-items: baseline; gap: 14px; border-bottom: 1px solid #E5E5E5; padding-bottom: 12px; margin-bottom: 22px; }
+  .num { font-size: 12px; font-weight: 700; color: #0d9488; letter-spacing: 1px; }
+  h2 { font-size: 19px; font-weight: 600; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  figure { background: #fff; border: 1px solid #E5E5E5; border-radius: 12px; overflow: hidden; }
+  figure img { width: 100%; display: block; background: #fff; }
+  figure.narrow { max-width: 560px; margin: 0 auto; }
+  figcaption { font-size: 13px; color: #666; padding: 12px 16px; border-top: 1px solid #EEE; line-height: 1.6; }
+  figcaption b { color: #111; font-weight: 600; }
+  .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; margin-right: 6px; }
+  .tag.bad { background: #FDE8E8; color: #B42318; }
+  .tag.good { background: #E7F6EE; color: #0E7B4F; }
+  .note { font-size: 13px; color: #666; margin-top: 14px; line-height: 1.75; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 18px; background: #fff; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid #EEE; vertical-align: top; }
+  th { font-size: 12px; color: #888; font-weight: 600; background: #FAFAFA; }
+  td b { font-weight: 600; }
+  .wide { grid-column: 1 / -1; }
+  footer { margin-top: 60px; font-size: 12px; color: #999; line-height: 1.9; border-top: 1px solid #E5E5E5; padding-top: 20px; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← 返回</a>
+  <h1>证据附录</h1>
+  <p class="sub">所有截图来自实际运行记录（2026-10-28 / 11-02 / 11-04 / 11-05），非示意图。顺序：实现 → 数据 → 评测 → 输出。</p>
+
+  <section>
+    <div class="head"><span class="num">01</span><h2>实现：画布已发布运行</h2></div>
+    <figure class="wide">
+      <img src="img/canvas.png" alt="Coze 画布实拍">
+      <figcaption><b>Coze 工作流画布</b> · 9 个节点，工作流 ID <code>travel_content_generator</code>，右侧为版本历史（最新 v0.12 · 2026-11-02）</figcaption>
+    </figure>
+    <div class="grid" style="margin-top:18px">
+      <figure>
+        <img src="img/agent-persona.png" alt="Agent 系统提示词">
+        <figcaption><b>Agent 系统提示词</b> · 6 条输入分流规则：城市/平台齐→直接调工作流；只给一个→另一个留空由工作流合并；「再来一条」→优先用本次会话上文；非白名单平台→不调用、只说明范围</figcaption>
+      </figure>
+      <figure>
+        <img src="img/agent-run.png" alt="Agent 实际运行输出">
+        <figcaption><b>同一会话实测</b> · 三版钩子 → 标题 → 正文 → 标签，<b>53.5s / 4652 Tokens</b>，输出可直接进入人工审核</figcaption>
+      </figure>
+    </div>
+    <figure style="margin-top:18px">
+      <img src="img/release-wf.png" alt="工作流发布记录">
+      <figcaption><b>工作流发布记录</b> · 每次修改后重新发布才会生效</figcaption>
+    </figure>
+    <figure style="margin-top:18px">
+      <img src="img/release-agent.png" alt="Agent 发布记录">
+      <figcaption><b>Agent 发布记录</b> · Bot 侧每次提示词改动独立发布</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <div class="head"><span class="num">02</span><h2>数据：记忆表真的写进去了</h2></div>
+    <figure>
+      <img src="img/memory.png" alt="user_memory 线上数据">
+      <figcaption><b>user_memory 线上数据</b> · 每次生成追加一条；<code>user_id</code> 固定为 <code>my_trip_bot</code>（单用户模式）；输入原样写入不做归一化——第 1 行存的是 <code>tiktok</code>，其余是 <code>TikTok</code>；第 8 行是超长城市串测试，未做校验。</figcaption>
+    </figure>
+    <p class="note">当前版本 <b>只写不读</b>：会话上下文由 Agent 传参承接，记忆表作为后续个性化预留。这是产品决策，不是遗漏。</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="num">03</span><h2>评测：发现问题 → 定位 → 修复 → 复测</h2></div>
+    <div class="grid">
+      <figure>
+        <img src="img/case1-before.png" alt="修复前：金额与绝对化词">
+        <figcaption><span class="tag bad">修复前</span><b>BC-02 金额与绝对化</b><br>正文出现「人均三天三千块」「比海岛香 10 倍」，知识库里没有对应原文。</figcaption>
+      </figure>
+      <figure>
+        <img src="img/case1-after.png" alt="修复后复测通过">
+        <figcaption><span class="tag good">修复后</span><b>复测通过</b><br>同一类用例重跑，全文无可查证金额、无绝对化与排名表述。</figcaption>
+      </figure>
+      <figure>
+        <img src="img/case2-before.png" alt="修复前：小红书未拦截">
+        <figcaption><span class="tag bad">修复前</span><b>BC-04 平台未兜底</b><br>输入「小红书」直接出稿，没有说明支持范围。</figcaption>
+      </figure>
+      <figure>
+        <img src="img/case2-after.png" alt="修复后：明确只支持三平台">
+        <figcaption><span class="tag good">修复后</span><b>复测通过</b><br>明确回复「目前仅支持 Instagram / TikTok / YouTube，你要换成哪一个？」</figcaption>
+      </figure>
+    </div>
+    <table>
+      <thead><tr><th>口径</th><th>数量</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>已设计用例</td><td><b>20</b></td><td>覆盖正常 / 边界 / 极值 / 环境异常</td></tr>
+        <tr><td>已执行</td><td><b>10</b></td><td>B4 之后的 10 条按计划不执行</td></tr>
+        <tr><td>修复后复测</td><td><b>5</b></td><td>清迈 YouTube / 再来一条 / 小红书 / 东京 Instagram / 清迈 Instagram</td></tr>
+        <tr><td>复测通过</td><td><b>5</b></td><td>思考过程外露、整包重复、金额与绝对化三项通病消失</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="head"><span class="num">04</span><h2>输出：三版钩子分开给</h2></div>
+    <figure class="narrow">
+      <img src="img/output.png" alt="Bot 实际输出">
+      <figcaption><b>实际输出</b> · 情绪冲突 / 信息差好奇 / 场景代入三版各一句，后接标题、正文、标签，可直接进入人工审核。</figcaption>
+    </figure>
+  </section>
+
+  <footer>
+    李宛盈 · 北京邮电大学 数字媒体技术 2028 届<br>
+    本文所有数据为本人实测记录，未做效果类承诺；单次耗时与 token 数为单样本，不作均值使用。
+  </footer>
+</div>
+</body>
+</html>
