@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>李宛盈 · Trip Bot 作品</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #F7F7F8; color: #1a1a1a; min-height: 100vh;
+    display: flex; align-items: center; justify-content: center; padding: 40px 24px;
+  }
+  .wrap { width: 100%; max-width: 760px; }
+  .hero { display: flex; align-items: center; gap: 14px; }
+  .logo { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; flex: 0 0 auto; }
+  h1 { font-size: 26px; font-weight: 700; letter-spacing: .5px; }
+  .sub { color: #666; font-size: 14px; margin-top: 8px; line-height: 1.7; }
+  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 32px; }
+  a.card {
+    display: block; text-decoration: none; color: inherit; background: #fff;
+    border: 1px solid #E5E5E5; border-radius: 12px; padding: 22px 20px;
+    transition: border-color .15s, transform .15s;
+  }
+  a.card:hover { border-color: #1a1a1a; transform: translateY(-2px); }
+  .n { font-size: 12px; color: #999; letter-spacing: 1px; }
+  .t { font-size: 17px; font-weight: 600; margin-top: 10px; }
+  .d { font-size: 13px; color: #777; margin-top: 8px; line-height: 1.6; }
+  .foot { margin-top: 36px; font-size: 12px; color: #999; line-height: 1.8; }
+  @media (max-width: 680px) { .cards { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero"><img class="logo" src="avatar.png" alt="Trip Bot"><h1>Trip Bot · 出海内容生成</h1></div>
+    <p class="sub">Coze Agent + Workflow 独立搭建（9 节点）<br>面向 TikTok / Instagram / YouTube 的旅游营销文案生成</p>
+
+    <div class="cards">
+      <a class="card" href="portfolio.html">
+        <div class="n">PORTFOLIO</div>
+        <div class="t">作品集</div>
+        <div class="d">项目背景、架构、评测与决策记录</div>
+      </a>
+      <a class="card" href="prd.html">
+        <div class="n">PRD</div>
+        <div class="t">产品需求文档</div>
+        <div class="d">六要素规格：位置 / 交互 / 状态 / 来源 / 逻辑 / 极值</div>
+      </a>
+      <a class="card" href="prototype.html">
+        <div class="n">PROTOTYPE</div>
+        <div class="t">低保真原型</div>
+        <div class="d">5 屏：空闲 / 加载 / 结果 / 钩子选择 / 审核导出</div>
+      </a>
+      <a class="card" href="evidence.html">
+        <div class="n">EVIDENCE</div>
+        <div class="t">证据附录</div>
+        <div class="d">画布实拍、记忆表写回、评测前后对照、实际输出</div>
+      </a>
+    </div>
+
+    <div class="foot">李宛盈 · 北京邮电大学 数字媒体技术 2028 届<br>内容由 AI 辅助生成，评测数据均为本人实测记录。</div>
+  </div>
+</body>
+</html>

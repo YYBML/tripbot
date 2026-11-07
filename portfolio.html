@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trip Bot · 出海内容生成智能体 | 作品集</title>
+<style>
+:root{
+  --ink:#0f172a; --muted:#475569; --soft:#64748b; --line:#e2e8f0; --bg:#f8fafc;
+  --blue:#2563eb; --blue-bg:#eff6ff; --blue-line:#bfdbfe;
+  --teal:#0d9488; --teal-bg:#f0fdfa; --teal-line:#99f6e4;
+  --amber:#b45309; --amber-bg:#fffbeb;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:#fff;color:var(--ink);line-height:1.65;
+  font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB","Noto Sans SC",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px;margin:0 auto;padding:0 40px}
+
+/* top bar */
+.topbar{border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:18px;padding-bottom:18px}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:38px;height:38px;border-radius:50%;display:block;object-fit:cover;flex:0 0 auto}
+.brand strong{display:block;font-size:15px;line-height:1.3}
+.brand span{display:block;font-size:11.5px;color:var(--soft);letter-spacing:.3px}
+.top-right{display:flex;align-items:center;gap:14px;font-size:12px;color:var(--muted)}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px rgba(13,148,136,.12)}
+.print-btn{border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit;font-size:12px;padding:7px 12px;border-radius:8px;cursor:pointer;transition:border-color .15s}
+.print-btn:hover{border-color:#94a3b8}
+
+/* hero */
+.hero{background:linear-gradient(180deg,#f8fafc 0%,#fff 78%);border-bottom:1px solid var(--line)}
+.hero .wrap{padding-top:64px;padding-bottom:56px}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);font-weight:700}
+h1{font-size:clamp(38px,5vw,60px);line-height:1.16;letter-spacing:-.03em;margin:18px 0 22px;font-weight:700}
+h1 span{color:var(--blue)}
+.lede{max-width:780px;font-size:17px;line-height:1.85;color:var(--muted);margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 0}
+.chip{font-size:12px;padding:6px 11px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:#fff}
+.chip.accent{border-color:var(--blue-line);background:var(--blue-bg);color:#1e40af}
+.hero-meta{margin-top:26px;font-size:12px;color:var(--soft);letter-spacing:.02em}
+
+/* kpis */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}
+.kpi{padding:28px 28px 30px 0;border-right:1px solid var(--line)}
+.kpi:last-child{border-right:0}
+.kpi:not(:first-child){padding-left:28px}
+.kpi b{display:block;font-size:34px;letter-spacing:-.02em;line-height:1;font-weight:700}
+.kpi b em{font-style:normal;font-size:14px;color:var(--soft);margin-left:4px;letter-spacing:0;font-weight:400}
+.kpi span{display:block;margin-top:9px;font-size:12.5px;color:var(--muted)}
+
+/* sections */
+section.block{padding:64px 0;border-bottom:1px solid var(--line)}
+.section-head{display:flex;align-items:baseline;gap:16px;margin-bottom:34px}
+.num{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--teal);white-space:nowrap}
+h2{font-size:clamp(24px,3vw,32px);line-height:1.35;letter-spacing:-.02em;margin:0;font-weight:700}
+.section-lead{max-width:780px;font-size:15px;line-height:1.85;color:var(--muted);margin:-18px 0 32px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{border:1px solid var(--line);border-radius:14px;padding:24px;background:#fff}
+.card .tag{font-size:11px;letter-spacing:.12em;color:var(--soft);font-weight:700}
+.card h3{font-size:17px;margin:10px 0 8px;line-height:1.5}
+.card p{font-size:14px;line-height:1.75;color:var(--muted);margin:0}
+.card p + p{margin-top:8px}
+
+/* diagram */
+.diagram{border:1px solid var(--line);border-radius:16px;background:#fbfdff;padding:18px 18px 10px;overflow:hidden}
+.proof{margin:16px 0 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+.proof img{width:100%;display:block;max-height:58mm;object-fit:contain;background:#fff}
+.proof figcaption{font-size:12px;color:var(--muted);padding:9px 14px;border-top:1px solid var(--line)}
+.diagram svg{width:100%;height:auto;display:block}
+.capabilities{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+.cap{padding:18px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.cap b{display:block;font-size:13.5px;margin-bottom:6px}
+.cap span{font-size:12.5px;color:var(--muted);line-height:1.65;display:block}
+
+/* decisions */
+.decision h3{color:var(--blue);font-size:15.5px;margin:0 0 10px;line-height:1.55}
+.decision p{font-size:13.5px}
+.tradeoff{margin-top:14px;padding:10px 12px;border-radius:8px;background:var(--amber-bg);color:#92400e;font-size:12px;line-height:1.65}
+.tradeoff b{color:#78350f}
+
+/* eval */
+.eval-layout{display:grid;grid-template-columns:1.25fr .75fr;gap:32px;align-items:start}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:11px;letter-spacing:.1em;color:var(--soft);font-weight:700;padding:0 12px 10px 0;border-bottom:1px solid var(--line);text-transform:uppercase}
+td{padding:12px 12px 12px 0;border-bottom:1px solid var(--line);vertical-align:top;color:var(--muted);line-height:1.6}
+td strong{color:var(--ink);font-weight:600}
+.case-box{border:1px solid var(--line);border-radius:14px;padding:22px;background:#fff}
+.case-box h4{font-size:13px;margin:0 0 16px;letter-spacing:.04em}
+.case-bar{display:flex;height:34px;border-radius:8px;overflow:hidden;margin-bottom:14px}
+.case-bar i{display:grid;place-items:center;font-style:normal;font-size:11px;color:#fff;font-weight:700}
+.case-legend{display:grid;gap:7px;font-size:12px;color:var(--muted)}
+.case-legend div{display:flex;justify-content:space-between}
+.case-legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px;background:var(--dot)}
+.note{margin-top:14px;font-size:11.5px;color:var(--soft);line-height:1.7;border-top:1px dashed var(--line);padding-top:12px}
+
+/* scenarios */
+.scenario .step{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--teal-bg);color:var(--teal);font-size:11px;font-weight:700;margin-bottom:12px}
+.scenario .say{margin:12px 0 0;font-size:12.5px;color:var(--muted);background:var(--bg);border-radius:8px;padding:9px 11px}
+.scenario .say b{color:var(--ink)}
+
+/* status */
+.status-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.status-col{border:1px solid var(--line);border-radius:14px;padding:22px;background:#fff}
+.status-col h3{font-size:13px;margin:0 0 14px;display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.dot.done{background:var(--teal)}
+.dot.doing{background:var(--amber)}
+.dot.next{background:#94a3b8}
+.status-col ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.status-col li{font-size:13px;color:var(--muted);line-height:1.55;padding-left:16px;position:relative}
+.status-col li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;border-radius:50%;background:#cbd5e1}
+
+/* reflection */
+.reflect{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.reflect div{border-left:3px solid var(--teal);padding:4px 0 4px 16px}
+.reflect b{display:block;font-size:13.5px;margin-bottom:5px}
+.reflect span{font-size:12.5px;color:var(--muted);line-height:1.7}
+
+footer{padding:34px 0 44px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;font-size:11.5px;color:var(--soft)}
+
+@media (max-width:860px){
+  .wrap{padding:0 22px}
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .kpi{padding:22px 18px;border-right:0;border-bottom:1px solid var(--line)}
+  .kpi:nth-child(odd){border-right:1px solid var(--line)}
+  .kpi:not(:first-child){padding-left:18px}
+  .grid-3,.capabilities,.status-grid,.reflect{grid-template-columns:1fr}
+  .eval-layout{grid-template-columns:1fr}
+  footer .wrap{flex-direction:column}
+}
+
+@page{size:A4 portrait;margin:11mm}
+@media print{
+  body{font-size:10pt;background:#fff}
+  .wrap{max-width:none;padding:0}
+  .print-btn{display:none}
+  .hero{background:#fff}
+  .hero .wrap{padding-top:6mm;padding-bottom:6mm}
+  h1{font-size:29pt;margin:4mm 0}
+  .lede{font-size:10pt}
+  .block{padding:6mm 0}
+  .section-head{margin-bottom:6mm}
+  .kpis{grid-template-columns:repeat(4,1fr)}
+  .kpi{padding:5mm 5mm 5mm 0!important;border-right:1px solid var(--line)!important;border-bottom:0!important}
+  .kpi:first-child{padding-left:0!important}
+  .kpi:not(:first-child){padding-left:5mm!important}
+  .grid-3,.capabilities,.status-grid,.reflect{grid-template-columns:repeat(3,1fr);gap:4mm}
+  .capabilities{grid-template-columns:repeat(4,1fr)}
+  .eval-layout{grid-template-columns:1.2fr .8fr;gap:7mm}
+  .card,.cap,.case-box,.status-col,.diagram,tr,.reflect div{break-inside:avoid}
+  .page-break{break-before:page}
+  a{color:inherit;text-decoration:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <img class="brand-mark" src="avatar.png" alt="Trip Bot">
+      <div>
+        <strong>Trip Bot</strong>
+        <span>出海内容生成智能体 · 作品集</span>
+      </div>
+    </div>
+    <div class="top-right">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span>MVP 已搭建 · 评测执行中</span>
+      <button class="print-btn" type="button" onclick="window.print()">打印 / 导出 PDF</button>
+    </div>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">个人独立项目 · AI 产品 / 工作流设计</div>
+    <h1>让出海文案生成<br><span>有事实依据，也有记忆。</span></h1>
+    <p class="lede">Trip Bot 是一个部署在 Coze 上的内容生成智能体。输入城市与平台，它用 RAG 检索爆款写法、按城市联网搜索补充信息，生成平台化正文，并给出三版可测试的钩子；会话内上下文让“再来一条”不必重复交代需求，用户记忆表记录历史偏好（当前仅写入，不参与生成）。</p>
+    <div class="chips" aria-label="技术栈">
+      <span class="chip accent">Coze Workflow</span>
+      <span class="chip">RAG 知识库</span>
+      <span class="chip">Bot Database</span>
+      <span class="chip">Prompt 工程</span>
+      <span class="chip">出海内容增长</span>
+    </div>
+    <div class="hero-meta">工作流 ID：travel_content_generator · 2026.10 · 北京邮电大学 数字媒体技术 2028 届 · 求职方向：AI 产品 / 出海内容增长</div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="kpis" aria-label="项目概览">
+      <div class="kpi"><b>9</b><span>个节点串联的生成链路</span></div>
+      <div class="kpi"><b>3<em>版</em></b><span>每次输出的钩子方案</span></div>
+      <div class="kpi"><b>10<em>条</em></b><span>已执行的评测用例</span></div>
+      <div class="kpi"><b>3<em>种</em></b><span>平台语感：IG / TikTok / YouTube</span></div>
+    </section>
+
+    <section class="block">
+      <div class="section-head"><span class="num">01</span><h2>问题不在“写不出来”，而在“写得慢、写得假、记不住”。</h2></div>
+      <div class="grid-3">
+        <article class="card">
+          <div class="tag">PAIN 01</div>
+          <h3>产出慢</h3>
+          <p>城市与平台的组合持续增加，人工单条从选题到成稿约 30 分钟，很难支撑日更和批量分发。</p>
+        </article>
+        <article class="card">
+          <div class="tag">PAIN 02</div>
+          <h3>事实假</h3>
+          <p>通用模型会补全不存在的地址、门票和开放时间。对出海账号来说，一次失实就可能透支信任。</p>
+        </article>
+        <article class="card">
+          <div class="tag">PAIN 03</div>
+          <h3>记不住</h3>
+          <p>Coze 工作流默认无状态，用户每轮都要重复输入城市和平台，连续出稿的体验是断的。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="block page-break">
+      <div class="section-head"><span class="num">02</span><h2>一条从输入到文案包的 9 节点链路</h2></div>
+      <p class="section-lead">输入只需城市与平台，两个变量都可以留空。工作流先读记忆，再按城市联网搜索补充实时信息，合并后查知识库；两个大模型节点分别负责正文和三版钩子，输出一套可直接进入人工审核的文案包。</p>
+
+      <div class="diagram">
+        <svg viewBox="0 0 1200 430" role="img" aria-labelledby="flow-title flow-desc">
+          <title id="flow-title">Trip Bot 的 9 节点工作流</title>
+          <desc id="flow-desc">从输入城市与平台开始，依次经过查询记忆、联网搜索、JavaScript 合并、RAG 检索、正文生成、钩子优化、写回记忆，最后结构化输出。</desc>
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+            </marker>
+            <marker id="arrow-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#0d9488"/>
+            </marker>
+          </defs>
+
+          <g stroke="#94a3b8" stroke-width="1.8" fill="none" marker-end="url(#arrow)">
+            <line x1="216" y1="82" x2="251" y2="82"/>
+            <line x1="451" y1="82" x2="486" y2="82"/>
+            <line x1="686" y1="82" x2="721" y2="82"/>
+            <line x1="921" y1="82" x2="956" y2="82"/>
+            <polyline points="1156,82 1180,82 1180,298 1156,298"/>
+            <line x1="956" y1="298" x2="921" y2="298"/>
+            <line x1="721" y1="298" x2="686" y2="298"/>
+            <line x1="486" y1="298" x2="451" y2="298"/>
+          </g>
+
+          <g stroke="#0d9488" stroke-width="1.5" stroke-dasharray="5 5" fill="none">
+            <line x1="351" y1="128" x2="351" y2="150" marker-end="url(#arrow-teal)"/>
+            <line x1="586" y1="214" x2="586" y2="250" marker-end="url(#arrow-teal)"/>
+            <line x1="1056" y1="128" x2="1056" y2="150" marker-end="url(#arrow-teal)"/>
+          </g>
+
+          <!-- row 1 -->
+          <g>
+            <rect x="16" y="36" width="200" height="92" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+            <circle cx="42" cy="62" r="11" fill="#e2e8f0"/>
+            <text x="42" y="66" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">1</text>
+            <text x="62" y="67" font-size="14" font-weight="600" fill="#0f172a">开始 · 输入</text>
+            <text x="32" y="98" font-size="10.5" fill="#64748b">city / platform，均可留空</text>
+          </g>
+          <g>
+            <rect x="251" y="36" width="200" height="92" rx="12" fill="#f0fdfa" stroke="#99f6e4"/>
+            <circle cx="277" cy="62" r="11" fill="#ccfbf1"/>
+            <text x="277" y="66" text-anchor="middle" font-size="11" font-weight="700" fill="#0f766e">2</text>
+            <text x="297" y="67" font-size="14" font-weight="600" fill="#0f172a">查询记忆</text>
+            <text x="267" y="98" font-size="10.5" fill="#64748b">取 user_memory 最新 1 条</text>
+          </g>
+          <g>
+            <rect x="486" y="36" width="200" height="92" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+            <circle cx="512" cy="62" r="11" fill="#dbeafe"/>
+            <text x="512" y="66" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">3</text>
+            <text x="532" y="67" font-size="14" font-weight="600" fill="#0f172a">联网搜索</text>
+            <text x="502" y="98" font-size="10.5" fill="#64748b">按城市补充实时信息</text>
+          </g>
+          <g>
+            <rect x="721" y="36" width="200" height="92" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+            <circle cx="747" cy="62" r="11" fill="#dbeafe"/>
+            <text x="747" y="66" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">4</text>
+            <text x="767" y="67" font-size="14" font-weight="600" fill="#0f172a">JS 合并</text>
+            <text x="737" y="98" font-size="10.5" fill="#64748b">本次 &gt; 历史 &gt; 默认值</text>
+          </g>
+          <g>
+            <rect x="956" y="36" width="200" height="92" rx="12" fill="#f0fdfa" stroke="#99f6e4"/>
+            <circle cx="982" cy="62" r="11" fill="#ccfbf1"/>
+            <text x="982" y="66" text-anchor="middle" font-size="11" font-weight="700" fill="#0f766e">5</text>
+            <text x="1002" y="67" font-size="14" font-weight="600" fill="#0f172a">RAG 检索</text>
+            <text x="972" y="98" font-size="10.5" fill="#64748b">语义检索 Top-K 3–5</text>
+          </g>
+
+          <!-- row 2 -->
+          <g>
+            <rect x="956" y="252" width="200" height="92" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+            <circle cx="982" cy="278" r="11" fill="#dbeafe"/>
+            <text x="982" y="282" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">6</text>
+            <text x="1002" y="283" font-size="14" font-weight="600" fill="#0f172a">正文生成 · LLM A</text>
+            <text x="972" y="314" font-size="10.5" fill="#64748b">按平台语感写作，禁止编造</text>
+          </g>
+          <g>
+            <rect x="721" y="252" width="200" height="92" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+            <circle cx="747" cy="278" r="11" fill="#dbeafe"/>
+            <text x="747" y="282" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">7</text>
+            <text x="767" y="283" font-size="14" font-weight="600" fill="#0f172a">钩子优化 · LLM B</text>
+            <text x="737" y="314" font-size="10.5" fill="#64748b">三种心理路径，各 ≤20 字</text>
+          </g>
+          <g>
+            <rect x="486" y="252" width="200" height="92" rx="12" fill="#f0fdfa" stroke="#99f6e4"/>
+            <circle cx="512" cy="278" r="11" fill="#ccfbf1"/>
+            <text x="512" y="282" text-anchor="middle" font-size="11" font-weight="700" fill="#0f766e">8</text>
+            <text x="532" y="283" font-size="14" font-weight="600" fill="#0f172a">写回记忆</text>
+            <text x="502" y="314" font-size="10.5" fill="#64748b">upsert 本次城市与平台</text>
+          </g>
+          <g>
+            <rect x="251" y="252" width="200" height="92" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+            <circle cx="277" cy="278" r="11" fill="#e2e8f0"/>
+            <text x="277" y="282" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">9</text>
+            <text x="297" y="283" font-size="14" font-weight="600" fill="#0f172a">结构化输出</text>
+            <text x="267" y="314" font-size="10.5" fill="#64748b">参数 / 正文 / 钩子 / 来源</text>
+          </g>
+
+          <!-- external stores -->
+          <g>
+            <rect x="251" y="150" width="435" height="64" rx="10" fill="#fff" stroke="#99f6e4" stroke-dasharray="4 4"/>
+            <text x="265" y="174" font-size="11" font-weight="700" fill="#0f766e">Bot Database · user_memory</text>
+            <text x="265" y="192" font-size="10" fill="#64748b">user_id · city · platform · style</text>
+            <text x="265" y="206" font-size="9.5" fill="#94a3b8">读最新 1 条 / 每轮写回</text>
+          </g>
+          <g>
+            <rect x="956" y="150" width="200" height="64" rx="10" fill="#fff" stroke="#99f6e4" stroke-dasharray="4 4"/>
+            <text x="970" y="174" font-size="10.5" font-weight="700" fill="#0f766e">知识库 · 文案心法</text>
+            <text x="970" y="192" font-size="9.5" fill="#64748b">爆款写法 · 平台范式</text>
+            <text x="970" y="206" font-size="9.5" fill="#94a3b8">语义检索 Top-K 3–5</text>
+          </g>
+
+          <!-- legend -->
+          <g font-size="10.5" fill="#64748b">
+            <rect x="20" y="394" width="10" height="10" rx="2" fill="#f0fdfa" stroke="#99f6e4"/>
+            <text x="38" y="403">数据与记忆</text>
+            <rect x="138" y="394" width="10" height="10" rx="2" fill="#eff6ff" stroke="#bfdbfe"/>
+            <text x="156" y="403">模型与逻辑</text>
+            <rect x="256" y="394" width="10" height="10" rx="2" fill="#f8fafc" stroke="#cbd5e1"/>
+            <text x="274" y="403">输入 / 输出</text>
+            <line x1="382" y1="399" x2="402" y2="399" stroke="#0d9488" stroke-width="1.5" stroke-dasharray="5 5"/>
+            <text x="410" y="403">读写依赖</text>
+            <text x="1180" y="403" text-anchor="end">工作流 ID：travel_content_generator · 9 个节点</text>
+          </g>
+        </svg>
+      </div>
+
+      <figure class="proof">
+        <img src="img/canvas.png" alt="Coze 画布实拍：9 个节点">
+        <figcaption>Coze 画布实拍 · 9 个节点已发布运行（工作流 ID：travel_content_generator）</figcaption>
+      </figure>
+
+      <div class="capabilities">
+        <div class="cap"><b>记住上下文</b><span>合并规则为“本次输入 &gt; 默认值”；会话内的上下文由 Agent 传参承接。用户记忆表当前仅写入、不参与生成。</span></div>
+        <div class="cap"><b>检索素材</b><span>先按城市联网搜索补充实时信息，再用 RAG 检索爆款写法与平台范式；金额与开放时间无法核实就标注待核实。</span></div>
+        <div class="cap"><b>生成正文</b><span>大模型 A 按 Instagram / TikTok / YouTube 三种语感分别写作。</span></div>
+        <div class="cap"><b>提供选择</b><span>大模型 B 输出情绪冲突、信息差好奇、场景代入三版钩子。</span></div>
+      </div>
+    </section>
+
+    <section class="block page-break">
+      <div class="section-head"><span class="num">03</span><h2>三个关键决策</h2></div>
+      <div class="grid-3">
+        <article class="card decision">
+          <div class="tag">DECISION 01</div>
+          <h3>为什么用 RAG，而不是纯 Prompt？</h3>
+          <p>爆款写法是隐性经验：开场、节奏、平台语感都藏在样例里。把这些沉淀成知识库，比每次在 Prompt 里重写规则更稳定；景点事实交给联网搜索，Prompt 禁止编造地址、门票、开放时间。</p>
+          <div class="tradeoff"><b>取舍：</b>事实依赖搜索质量，不能保证 100% 准确，输出仍需人工核实。</div>
+        </article>
+        <article class="card decision">
+          <div class="tag">DECISION 02</div>
+          <h3>为什么加一层记忆？</h3>
+          <p>Coze 工作流默认无状态。查询最新一条 user_memory，按优先级合并变量，让“再来一条”和“换成 TikTok”都能接得上。</p>
+          <div class="tradeoff"><b>取舍：</b>演示期固定 user_id；多用户需要替换为会话或登录态 ID。</div>
+        </article>
+        <article class="card decision">
+          <div class="tag">DECISION 03</div>
+          <h3>为什么一次给三版钩子？</h3>
+          <p>情绪冲突、信息差好奇、场景代入对应三条不同的点击动机。先给人选，再为后续 A/B 测试留接口。</p>
+          <div class="tradeoff"><b>取舍：</b>多一次模型调用和选择成本；目前由人工挑选，尚无采纳率数据。</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="block page-break">
+      <div class="section-head"><span class="num">04</span><h2>评测：先定义“算好”，再调 Prompt</h2></div>
+      <div class="eval-layout">
+        <div>
+          <table aria-label="评测维度">
+            <thead><tr><th>维度</th><th>判定标准</th></tr></thead>
+            <tbody>
+              <tr><td><strong>记忆命中</strong></td><td>城市 / 平台留空时，输出参数与上一条记录一致</td></tr>
+              <tr><td><strong>事实可靠</strong></td><td>POI 真实；不编造地址 / 门票 / 开放时间，无法核实须标注</td></tr>
+              <tr><td><strong>平台适配</strong></td><td>Instagram / TikTok / YouTube 语气可区分，不串味</td></tr>
+              <tr><td><strong>钩子质量</strong></td><td>三版风格不同，至少一版人工判断“想点开”</td></tr>
+              <tr><td><strong>兜底健壮</strong></td><td>乱码、空值、不支持的平台不崩溃，有引导话术</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <aside class="case-box">
+          <h4>20 条用例的结构</h4>
+          <div class="case-bar" role="img" aria-label="正常 3 条、边界 7 条、对抗 5 条、质量 5 条">
+            <i style="width:15%;background:#2563eb">3</i>
+            <i style="width:35%;background:#0d9488">7</i>
+            <i style="width:25%;background:#d97706">5</i>
+            <i style="width:25%;background:#b91c1c">5</i>
+          </div>
+          <div class="case-legend">
+            <div><span style="--dot:#2563eb">正常用例</span><b>3</b></div>
+            <div><span style="--dot:#0d9488">边界用例</span><b>7</b></div>
+            <div><span style="--dot:#d97706">对抗用例</span><b>5</b></div>
+            <div><span style="--dot:#b91c1c">质量用例</span><b>5</b></div>
+          </div>
+          <p class="note">已执行 10 条，定位 5 类 badcase；修复后复测 5 条全部通过。记录与截图见附件。</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-head"><span class="num">05</span><h2>三个演示场景</h2></div>
+      <div class="grid-3">
+        <article class="card scenario">
+          <div class="step">01</div>
+          <h3>连续出稿</h3>
+          <p>先给一次完整输入，再只说“再来一条”，验证记忆是否真的接住上下文。</p>
+          <p class="say">“<b>清迈 · Instagram</b>” → “<b>再来一条</b>”</p>
+        </article>
+        <article class="card scenario">
+          <div class="step">02</div>
+          <h3>中途换平台</h3>
+          <p>只改平台、不改城市，验证变量合并逻辑和平台语感切换。</p>
+          <p class="say">“<b>换成 TikTok</b>” → 城市保留清迈</p>
+        </article>
+        <article class="card scenario">
+          <div class="step">03</div>
+          <h3>平台兜底</h3>
+          <p>输入不支持的平台，验证模型不硬凑语感，而是明确告知支持范围。</p>
+          <p class="say">“<b>换成小红书</b>” → “目前仅支持 Instagram / TikTok / YouTube”</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-head"><span class="num">06</span><h2>当前状态与下一步</h2></div>
+      <div class="status-grid">
+        <div class="status-col">
+          <h3><span class="dot done"></span>已完成</h3>
+          <ul>
+            <li>9 节点工作流串联与变量传递</li>
+            <li>记忆查询—合并—写回闭环</li>
+            <li>文案心法 RAG 知识库与检索配置</li>
+            <li>三版钩子 Prompt 与输出格式</li>
+            <li>20 条评测集设计；已执行 10 条并完成 5 条复测</li>
+          </ul>
+        </div>
+        <div class="status-col">
+          <h3><span class="dot doing"></span>进行中</h3>
+          <ul>
+            <li>跑完剩余 10 条用例（对抗 5 + 质量 5）</li>
+            <li>Figma 原型 3–5 屏</li>
+            <li>完整 PRD 文档</li>
+            <li>Notion 作品集页</li>
+          </ul>
+        </div>
+        <div class="status-col">
+          <h3><span class="dot next"></span>下一步</h3>
+          <ul>
+            <li>事实来源升级：接入 POI / 票价数据接口</li>
+            <li>多用户支持：动态 user_id</li>
+            <li>批量生成：多城市 / 多平台</li>
+            <li>钩子采纳率看板</li>
+            <li>对接平台草稿箱</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <div class="section-head"><span class="num">07</span><h2>如果重做，我会改变的三个顺序</h2></div>
+      <div class="reflect">
+        <div><b>评测前置</b><span>先定义“不编造”的判定，再调 Prompt，避免凭感觉优化。</span></div>
+        <div><b>事实边界先行</b><span>先想清楚哪些必须标待核实，再堆功能；模型不知道的地址和价格，宁可空着。</span></div>
+        <div><b>取舍写明</b><span>固定 user_id 是 MVP 的合理简化，但要在 PRD 里标清多用户改造点。</span></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Trip Bot · 个人独立项目 · 2026.10 · 北邮数媒技 2028 届</span>
+    <span>项目状态与数据以《A1 版本记录与版本说明》（2026-10-26）为准</span>
+  </div>
+</footer>
+
+</body>
+</html>
