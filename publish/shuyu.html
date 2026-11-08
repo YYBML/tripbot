@@ -31,6 +31,11 @@
   .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; margin-right: 6px; }
   .tag.bad { background: #FDE8E8; color: #B42318; }
   .tag.good { background: #E7F6EE; color: #0E7B4F; }
+  .demo-cta { display: flex; align-items: center; gap: 18px; background: #fff; border: 1px solid #E5E5E5; border-radius: 12px; padding: 16px 18px; margin-top: 22px; }
+  .demo-cta img { width: 104px; height: 104px; display: block; border-radius: 4px; flex: 0 0 auto; }
+  .demo-cta .t { font-size: 15px; font-weight: 600; }
+  .demo-cta p { font-size: 13px; color: #666; margin-top: 4px; line-height: 1.7; }
+  .demo-cta a { color: #0d6b5f; }
   .note { font-size: 13px; color: #666; margin-top: 14px; line-height: 1.75; }
   .note b { color: #111; }
   ul.plain { list-style: none; }
@@ -59,6 +64,14 @@
     <span class="chip">我的角色：产品构思 / 页面设计 / 前端开发</span>
     <span class="chip">Vue 3 + Vite</span>
     <span class="chip">2026.09</span>
+  </div>
+
+  <div class="demo-cta">
+    <img src="img/shuyu/qr-demo.png" alt="书遇交互演示二维码">
+    <div>
+      <div class="t">扫码体验交互演示</div>
+      <p>静态页面 + 示例数据，可切换读书墙 / 匹配 / 我的，并模拟一次上传与 AI 提取。<br><a href="shuyu-demo.html">或在浏览器中打开</a></p>
+    </div>
   </div>
 
   <section>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>书遇 · 交互演示</title>
+<style>
+  :root{
+    --cream:#FAF3E5;
+    --cream2:#EFE4CD;
+    --card:#FFFDF9;
+    --ink:#4A2E14;
+    --ink2:#7C6350;
+    --ink3:#A08A73;
+    --accent:#8C5A2B;
+    --pill:#F3E7D1;
+    --line:#E7DAC2;
+    --pos:#5F7A4E;
+    --neg:#A6544A;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei",-apple-system,sans-serif;
+    background:#E8DCC6;color:var(--ink);line-height:1.6;
+    display:flex;justify-content:center;
+  }
+  .serif{font-family:"Songti SC","Noto Serif SC","Source Han Serif SC",serif;}
+  .phone{
+    width:100%;max-width:420px;min-height:100vh;background:var(--cream);
+    display:flex;flex-direction:column;position:relative;
+    box-shadow:0 0 40px rgba(74,46,20,.18);
+  }
+  /* 顶栏 */
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 18px 10px;
+  }
+  .brand{font-size:19px;font-weight:700;letter-spacing:.06em;color:var(--accent);}
+  .user{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink2);}
+  .ava{
+    width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--cream);
+    display:flex;align-items:center;justify-content:center;font-size:11px;font-family:"Songti SC",serif;
+  }
+  .banner{
+    margin:0 18px 4px;padding:6px 10px;border-radius:8px;
+    background:rgba(140,90,43,.08);color:var(--ink2);
+    font-size:11px;text-align:center;letter-spacing:.02em;
+  }
+  main{flex:1;overflow-y:auto;padding:6px 18px 24px;scrollbar-width:none;}
+  main::-webkit-scrollbar{display:none;}
+  .screen{display:none;animation:fade .25s ease;}
+  .screen.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+  /* 通用 */
+  .backline{font-size:11px;color:var(--ink3);margin:4px 0 8px;}
+  h1{font-size:24px;font-weight:700;letter-spacing:.04em;}
+  .lede{font-size:12px;color:var(--ink3);margin-top:2px;}
+  .sect{margin-top:18px;}
+  .sect-title{font-size:12px;color:var(--ink3);letter-spacing:.08em;margin-bottom:8px;}
+  .pills{display:flex;gap:8px;margin:14px 0 12px;}
+  .pill{
+    font-size:12px;padding:5px 14px;border-radius:14px;border:1px solid transparent;
+    background:transparent;color:var(--ink2);cursor:pointer;font-family:inherit;
+  }
+  .pill.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+
+  /* 笔记卡片 */
+  .note{
+    background:var(--card);border-radius:14px;padding:14px 15px 10px;margin-bottom:12px;
+    box-shadow:0 1px 2px rgba(74,46,20,.05);
+  }
+  .note-head{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+  .note-head .ava{width:30px;height:30px;font-size:13px;background:#6B4B2C;}
+  .who{font-size:12.5px;font-weight:600;color:var(--ink);}
+  .when{font-size:10.5px;color:var(--ink3);margin-top:-1px;}
+  .quote{
+    font-family:"Songti SC","Noto Serif SC",serif;font-size:14.5px;line-height:1.75;
+    color:var(--ink);background:#FBF4E4;border-radius:10px;padding:11px 12px;
+  }
+  .acts{display:flex;gap:20px;padding:9px 2px 2px;color:var(--ink3);font-size:11.5px;}
+  .acts button{
+    background:none;border:0;color:inherit;font:inherit;cursor:pointer;
+    display:flex;align-items:center;gap:4px;padding:2px 0;
+  }
+  .acts button.liked{color:var(--neg);}
+
+  /* 我的 */
+  .ai-card{
+    background:var(--card);border-radius:14px;padding:15px 15px 13px;margin-top:14px;
+    box-shadow:0 1px 2px rgba(74,46,20,.05);
+  }
+  .ai-title{font-size:13px;font-weight:600;letter-spacing:.04em;margin-bottom:11px;}
+  .ai-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .ai-row:last-child{margin-bottom:0;}
+  .ai-k{font-size:12px;color:var(--ink3);width:42px;flex:0 0 42px;}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;}
+  .tag{
+    font-size:11.5px;padding:3px 10px;border-radius:11px;background:var(--pill);color:var(--ink2);
+    animation:pop .3s ease both;
+  }
+  .tag.pos{background:#E4EFDC;color:var(--pos);}
+  .tag.neg{background:#F7E3DF;color:var(--neg);}
+  @keyframes pop{from{opacity:0;transform:scale(.9);}to{opacity:1;transform:none;}}
+  .search{
+    display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);
+    border-radius:20px;padding:8px 14px;margin:12px 0;color:var(--ink3);font-size:12px;
+  }
+  .upload{
+    width:100%;border:0;border-radius:12px;background:var(--accent);color:#fff;
+    font-family:inherit;font-size:13px;font-weight:600;letter-spacing:.04em;
+    padding:13px;margin-top:16px;cursor:pointer;
+  }
+  .upload:disabled{opacity:.6;cursor:default;}
+  .note .meta-line{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
+  .badges{display:flex;gap:6px;}
+  .badge{font-size:10px;padding:2px 8px;border-radius:9px;background:#F1E6D0;color:var(--ink2);}
+  .badge.pub{background:#E4EFDC;color:var(--pos);}
+  .badge.wait{background:#F7E9CF;color:#8A6A20;}
+
+  /* 匹配 */
+  .match-card{
+    background:var(--card);border-radius:16px;padding:18px;margin-top:16px;
+    box-shadow:0 2px 10px rgba(74,46,20,.06);
+  }
+  .match-head{display:flex;align-items:center;gap:13px;}
+  .match-head .ava{width:48px;height:48px;font-size:20px;background:#6B4B2C;flex:0 0 48px;}
+  .match-name{font-family:"Songti SC",serif;font-size:19px;font-weight:700;}
+  .match-rate{font-size:12px;color:var(--neg);margin-top:1px;}
+  .divider{border-top:1px dashed var(--line);margin:14px 0;}
+  .sub-label{font-size:11px;color:var(--ink3);letter-spacing:.06em;margin-bottom:6px;}
+  .rec{
+    font-family:"Songti SC","Noto Serif SC",serif;font-size:14.5px;line-height:1.8;
+    background:#FBF4E4;border-radius:10px;padding:12px 13px;
+  }
+  .apply{
+    width:100%;border:0;border-radius:12px;background:var(--accent);color:#fff;
+    font-family:inherit;font-size:13px;font-weight:600;padding:13px;margin-top:16px;cursor:pointer;
+  }
+  .explain{font-size:11px;color:var(--ink3);line-height:1.7;margin-top:14px;}
+
+  /* 底部 Tab */
+  .tabs{
+    display:flex;background:var(--card);border-top:1px solid var(--line);
+    padding:8px 0 max(8px,env(safe-area-inset-bottom));
+    position:sticky;bottom:0;
+  }
+  .tabs button{
+    flex:1;background:none;border:0;font-family:inherit;font-size:12px;color:var(--ink3);
+    padding:6px 0;cursor:pointer;letter-spacing:.04em;
+  }
+  .tabs button.on{color:var(--accent);font-weight:700;}
+
+  /* 提示 */
+  .toast{
+    position:fixed;left:50%;bottom:84px;transform:translate(-50%,10px);
+    background:rgba(74,46,20,.92);color:#FFF8EA;font-size:12px;
+    padding:9px 16px;border-radius:20px;opacity:0;pointer-events:none;
+    transition:.25s;z-index:9;white-space:nowrap;
+  }
+  .toast.show{opacity:1;transform:translate(-50%,0);}
+  @media (min-width:520px){
+    body{align-items:center;padding:24px 0;background:#E3D6BE;}
+    .phone{min-height:auto;height:calc(100vh - 48px);border-radius:22px;overflow:hidden;}
+    .toast{bottom:auto;top:calc(50% + 260px);}
+  }
+</style>
+</head>
+<body>
+<div class="phone">
+  <header class="topbar">
+    <div class="brand serif">书遇</div>
+    <div class="user"><span class="ava">山</span>山间读者</div>
+  </header>
+  <div class="banner">静态演示 · 数据为示例，不连接后端</div>
+
+  <main>
+    <!-- 读书墙 -->
+    <section id="wall" class="screen active">
+      <div class="backline">← 返回主页</div>
+      <h1 class="serif">读书墙</h1>
+      <p class="lede">看看你的书友此刻读到什么、在想什么</p>
+
+      <div class="pills">
+        <button class="pill on" data-filter="all">全部笔记</button>
+        <button class="pill" data-filter="fav">我的收藏</button>
+      </div>
+
+      <div id="wallList">
+        <article class="note">
+          <div class="note-head">
+            <span class="ava serif">松</span>
+            <div><div class="who">松间读者</div><div class="when">2026-09-10 19:31</div></div>
+          </div>
+          <div class="quote serif">今年的杭州湖光渐长 不像往年的阴冷 店里落满阳光 像一场不急的新闻</div>
+          <div class="acts">
+            <button class="like">♡ <span>12</span></button>
+            <button>☆ <span>3</span></button>
+            <button>◌ <span>1</span></button>
+          </div>
+        </article>
+
+        <article class="note">
+          <div class="note-head">
+            <span class="ava serif">晚</span>
+            <div><div class="who">晚风读者</div><div class="when">2026-09-10 18:44</div></div>
+          </div>
+          <div class="quote serif">世界那么肯定 却留给我一个疑问</div>
+          <div class="acts">
+            <button class="like">♡ <span>8</span></button>
+            <button>☆ <span>1</span></button>
+            <button>◌ <span>0</span></button>
+          </div>
+        </article>
+
+        <article class="note">
+          <div class="note-head">
+            <span class="ava serif">雨</span>
+            <div><div class="who">雨声读者</div><div class="when">2026-09-09 21:02</div></div>
+          </div>
+          <div class="quote serif">把书合上以后 我还在那句话里站着</div>
+          <div class="acts">
+            <button class="like">♡ <span>5</span></button>
+            <button>☆ <span>0</span></button>
+            <button>◌ <span>0</span></button>
+          </div>
+        </article>
+      </div>
+      <p class="explain">墙上只展示已接受书友的公开笔记，并且都经过管理员审核。</p>
+    </section>
+
+    <!-- 匹配 -->
+    <section id="match" class="screen">
+      <div class="backline">← 返回主页</div>
+      <h1 class="serif">交个书友</h1>
+      <p class="lede">用你的摘录，找到读懂它的人</p>
+
+      <div class="match-card">
+        <div class="sub-label">匹配结果</div>
+        <div class="match-head">
+          <span class="ava serif">松</span>
+          <div>
+            <div class="match-name">松间读者</div>
+            <div class="match-rate">匹配度 82.4%</div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="sub-label">共同主题</div>
+        <div class="tags" style="margin-bottom:14px">
+          <span class="tag">安静</span><span class="tag">城市</span><span class="tag">时间</span>
+        </div>
+        <div class="sub-label">AI 推荐语</div>
+        <div class="rec">「山间读者，你和松间读者几乎说到一块去了」</div>
+        <button class="apply" id="applyBtn">发送书友申请</button>
+      </div>
+
+      <p class="explain">
+        匹配由 bge-m3 把笔记向量化后计算余弦相似度，低于 55% 不展示；推荐语按相似度分档生成。
+        演示环境不连接后端，不会真的发送申请。
+      </p>
+    </section>
+
+    <!-- 我的 -->
+    <section id="mine" class="screen">
+      <div class="backline">← 返回主页</div>
+      <h1 class="serif">我的笔记</h1>
+      <p class="lede">上传摘录，AI 会替你读出主题、关键词和情绪</p>
+
+      <div class="ai-card">
+        <div class="ai-title">AI 提取结果</div>
+        <div class="ai-row"><div class="ai-k">主题</div><div class="tags"><span class="tag">阳光</span><span class="tag">氛围</span><span class="tag">时光</span></div></div>
+        <div class="ai-row"><div class="ai-k">关键词</div><div class="tags"><span class="tag">杭州</span><span class="tag">光照</span><span class="tag">阳光</span><span class="tag">新闻</span><span class="tag">温暖</span></div></div>
+        <div class="ai-row"><div class="ai-k">情绪</div><div class="tags"><span class="tag pos">积极</span></div></div>
+      </div>
+
+      <button class="upload" id="uploadBtn">上传一条新笔记</button>
+
+      <div class="search">⌕ 搜索我的笔记（书名或内容）</div>
+      <div class="sect-title" style="margin-bottom:10px">我的笔记 <span id="noteCount">3</span> 条</div>
+
+      <div id="noteList">
+        <article class="note">
+          <div class="meta-line">
+            <span class="who">验证书3</span>
+            <span class="badges"><span class="badge pub">公开</span><span class="badge wait">待审核</span></span>
+          </div>
+          <div class="quote serif">今年的杭州湖光渐长 不像往年的阴冷 店里落满阳光 像一场不急的新闻</div>
+          <div class="when" style="margin-top:8px">2026-09-10 19:53</div>
+        </article>
+        <article class="note">
+          <div class="meta-line">
+            <span class="who">验证书3</span>
+            <span class="badges"><span class="badge pub">公开</span><span class="badge">已通过</span></span>
+          </div>
+          <div class="quote serif">世界那么肯定 却留给我一个疑问</div>
+          <div class="when" style="margin-top:8px">2026-09-10 19:48</div>
+        </article>
+        <article class="note">
+          <div class="meta-line">
+            <span class="who">验证书3</span>
+            <span class="badges"><span class="badge">已通过</span></span>
+          </div>
+          <div class="quote serif">夜把城市折起来 只剩站台上的灯</div>
+          <div class="when" style="margin-top:8px">2026-09-09 22:10</div>
+        </article>
+      </div>
+
+      <p class="explain">演示会模拟一次上传与 AI 提取，不写入任何服务器。</p>
+    </section>
+  </main>
+
+  <nav class="tabs">
+    <button class="on" data-go="wall">读书墙</button>
+    <button data-go="match">匹配</button>
+    <button data-go="mine">我的</button>
+  </nav>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const screens = document.querySelectorAll('.screen');
+  const tabs = document.querySelectorAll('.tabs button');
+  const toast = document.getElementById('toast');
+  let toastTimer;
+
+  function show(name){
+    screens.forEach(s => s.classList.toggle('active', s.id === name));
+    tabs.forEach(t => t.classList.toggle('on', t.dataset.go === name));
+    document.querySelector('main').scrollTop = 0;
+  }
+  tabs.forEach(t => t.addEventListener('click', () => show(t.dataset.go)));
+  const initial = location.hash.replace('#', '');
+  if (['wall','match','mine'].includes(initial)) show(initial);
+
+  function say(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+
+  // 点赞
+  document.querySelectorAll('.acts .like').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const n = btn.querySelector('span');
+      const liked = btn.classList.toggle('liked');
+      n.textContent = Number(n.textContent) + (liked ? 1 : -1);
+    });
+  });
+
+  // 收藏筛选
+  document.querySelectorAll('.pill').forEach(p => {
+    p.addEventListener('click', () => {
+      document.querySelectorAll('.pill').forEach(x => x.classList.remove('on'));
+      p.classList.add('on');
+      say(p.dataset.filter === 'fav' ? '演示环境：收藏列表为空' : '已显示全部笔记');
+    });
+  });
+
+  // 发送申请
+  document.getElementById('applyBtn').addEventListener('click', () => {
+    say('演示环境：申请不会真的发送');
+  });
+
+  // 模拟上传 + AI 提取
+  const uploadBtn = document.getElementById('uploadBtn');
+  const noteList = document.getElementById('noteList');
+  const noteCount = document.getElementById('noteCount');
+
+  uploadBtn.addEventListener('click', () => {
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = 'AI 正在提取主题 / 关键词 / 情绪…';
+    setTimeout(() => {
+      const card = document.createElement('article');
+      card.className = 'note';
+      card.innerHTML = `
+        <div class="meta-line">
+          <span class="who">验证书3</span>
+          <span class="badges"><span class="badge pub">公开</span><span class="badge wait">待审核</span></span>
+        </div>
+        <div class="quote serif">列车开走的时候 我还在想那句没说完的话</div>
+        <div class="when" style="margin-top:8px">刚刚</div>`;
+      noteList.prepend(card);
+      noteCount.textContent = Number(noteCount.textContent) + 1;
+
+      const ai = document.querySelector('.ai-card');
+      ai.innerHTML = `
+        <div class="ai-title">AI 提取结果</div>
+        <div class="ai-row"><div class="ai-k">主题</div><div class="tags"><span class="tag">告别</span><span class="tag">城市</span><span class="tag">夜</span></div></div>
+        <div class="ai-row"><div class="ai-k">关键词</div><div class="tags"><span class="tag">站台</span><span class="tag">列车</span><span class="tag">未说完的话</span></div></div>
+        <div class="ai-row"><div class="ai-k">情绪</div><div class="tags"><span class="tag">中性</span></div></div>`;
+
+      uploadBtn.disabled = false;
+      uploadBtn.textContent = '上传一条新笔记';
+      say('已模拟上传并完成 AI 提取');
+    }, 1400);
+  });
+</script>
+</body>
+</html>
