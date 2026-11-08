@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>书遇 · 匿名书友匹配社区</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #F7F7F8; color: #1a1a1a; line-height: 1.7; padding: 48px 24px 80px;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; }
+  .back { font-size: 13px; color: #666; text-decoration: none; }
+  .back:hover { color: #111; }
+  h1 { font-size: 30px; font-weight: 700; margin: 18px 0 10px; letter-spacing: -.3px; }
+  .sub { color: #666; font-size: 14px; max-width: 760px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .chip { font-size: 12px; color: #0d6b5f; background: #E7F4F1; border-radius: 20px; padding: 4px 12px; }
+  section { margin-top: 48px; }
+  .head { display: flex; align-items: baseline; gap: 14px; border-bottom: 1px solid #E5E5E5; padding-bottom: 12px; margin-bottom: 22px; }
+  .num { font-size: 12px; font-weight: 700; color: #0d9488; letter-spacing: 1px; }
+  h2 { font-size: 19px; font-weight: 600; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  figure { background: #fff; border: 1px solid #E5E5E5; border-radius: 12px; overflow: hidden; }
+  figure img { width: 100%; display: block; background: #fff; }
+  figure.narrow { max-width: 640px; margin: 0 auto; }
+  figcaption { font-size: 13px; color: #666; padding: 12px 16px; border-top: 1px solid #EEE; line-height: 1.6; }
+  figcaption b { color: #111; font-weight: 600; }
+  .wide { grid-column: 1 / -1; }
+  .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; margin-right: 6px; }
+  .tag.bad { background: #FDE8E8; color: #B42318; }
+  .tag.good { background: #E7F6EE; color: #0E7B4F; }
+  .note { font-size: 13px; color: #666; margin-top: 14px; line-height: 1.75; }
+  .note b { color: #111; }
+  ul.plain { list-style: none; }
+  ul.plain li { font-size: 14px; color: #444; padding-left: 16px; position: relative; margin-bottom: 6px; }
+  ul.plain li::before { content: ""; position: absolute; left: 2px; top: 11px; width: 6px; height: 6px; border-radius: 50%; background: #0d9488; }
+  ul.plain li b { color: #111; }
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 18px 0 6px; }
+  .flow span.step { font-size: 13px; color: #111; background: #fff; border: 1px solid #D9E7E3; border-radius: 8px; padding: 8px 12px; }
+  .flow span.arrow { color: #9bb3ad; font-size: 13px; }
+  .flow.small span.step { padding: 6px 10px; font-size: 12.5px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 18px; background: #fff; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid #EEE; vertical-align: top; }
+  th { font-size: 12px; color: #888; font-weight: 600; background: #FAFAFA; width: 32%; }
+  td b { font-weight: 600; }
+  footer { margin-top: 60px; font-size: 12px; color: #999; line-height: 1.9; border-top: 1px solid #E5E5E5; padding-top: 20px; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← 返回</a>
+  <h1>书遇 · 匿名书友匹配社区</h1>
+  <p class="sub">用读书笔记匹配同频者的匿名社交应用：上传摘录 → 向量相似度找最接近的人 → AI 写一句推荐语牵线 → 成为书友。</p>
+  <div class="meta">
+    <span class="chip">三人小组 · 创新创业实践</span>
+    <span class="chip">我的角色：产品构思 / 页面设计 / 前端开发</span>
+    <span class="chip">Vue 3 + Vite</span>
+    <span class="chip">2026.09</span>
+  </div>
+
+  <section>
+    <div class="head"><span class="num">01</span><h2>问题：读书 App 只帮找书，不帮找人</h2></div>
+    <ul class="plain">
+      <li>读完一本书满肚子话，朋友圈没人懂你摘下的那一句。</li>
+      <li>想聊真实的读后感，又不想暴露身份——<b>实名读书群让人不敢开口</b>。</li>
+      <li>现有产品都在做「找书」「管理书单」，<b>没有人用内容本身帮你找人</b>。</li>
+    </ul>
+    <div class="flow">
+      <span class="step">上传读书笔记</span><span class="arrow">→</span>
+      <span class="step">内容相似度匹配</span><span class="arrow">→</span>
+      <span class="step">AI 推荐语牵线</span><span class="arrow">→</span>
+      <span class="step">成为书友</span>
+    </div>
+    <p class="note">这是课程内的小组实践项目，<b>没有做真实用户测试</b>；验证方式是三人内部验收与课程答辩的现场演示，成果为可运行的完整前后端。</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="num">02</span><h2>我的角色：页面、交互与 28+ 接口联调</h2></div>
+    <table>
+      <tbody>
+        <tr><th>我（前端）</th><td>页面与交互实现（<b>Vue 3 + Vite</b>）、前后端联调（<b>28+ 接口</b>）、AI 提取结果与推荐语的展示</td></tr>
+        <tr><th>队友（后端）</th><td>FastAPI 接口、SQLite 数据模型、管理员后台</td></tr>
+        <tr><th>队友（AI）</th><td>Embedding、NumPy 向量检索、RAG 链路</td></tr>
+      </tbody>
+    </table>
+    <p class="note">三方靠统一接口契约串联：前端与后端通过 HTTP 对接，响应统一为 <code>{code, data, message}</code>；笔记交给 RAG 服务做向量化与匹配。</p>
+    <div class="grid" style="margin-top:22px">
+      <figure>
+        <img src="img/shuyu/notes-ai.png" alt="我的笔记与 AI 提取结果">
+        <figcaption><b>我的笔记</b> · 上传后即时显示 AI 提取的主题 / 关键词 / 情绪，并带审核状态（待审核 / 已通过），学生可自行决定是否公开</figcaption>
+      </figure>
+      <figure>
+        <img src="img/shuyu/wall.png" alt="读书墙">
+        <figcaption><b>读书墙</b> · 只展示已接受书友的公开笔记，支持点赞、收藏、评论；匿名靠昵称与头像，不暴露真实邮箱</figcaption>
+      </figure>
+    </div>
+    <p class="note">前端共 7 个模块：用户系统、书单管理、笔记上传、灵魂共振匹配、读书墙、书友关系、管理员后台。</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="num">03</span><h2>一条笔记的闭环</h2></div>
+    <div class="flow small">
+      <span class="step">上传笔记</span><span class="arrow">→</span>
+      <span class="step">AI 提取主题 / 关键词 / 情绪</span><span class="arrow">→</span>
+      <span class="step">存入数据库</span><span class="arrow">→</span>
+      <span class="step">管理员审核</span><span class="arrow">→</span>
+      <span class="step">上读书墙 / 进匹配池</span><span class="arrow">→</span>
+      <span class="step">匹配到同频书友</span>
+    </div>
+    <p class="note">审核是产品上的一道闸：未通过的笔记不会出现在墙上，也不会进入匹配池。前端在每个环节都要给出明确状态，避免用户不知道自己的笔记卡在哪一步。</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="num">04</span><h2>匹配：为什么用轻量 RAG</h2></div>
+    <div class="flow small">
+      <span class="step">bge-m3 向量化</span><span class="arrow">→</span>
+      <span class="step">NumPy 余弦相似度</span><span class="arrow">→</span>
+      <span class="step">低于 55% 过滤</span><span class="arrow">→</span>
+      <span class="step">DeepSeek 生成推荐语</span>
+    </div>
+    <p class="note">笔记量级小、向量不多，<b>一次矩阵乘法就能算完全部相似度</b>，不需要引入 FAISS / Milvus 这类向量库。相似度分档决定推荐语语气：越接近，话越笃定。</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="num">05</span><h2>和 AI 一起迭代</h2></div>
+
+    <figure class="narrow">
+      <div style="position:relative">
+        <span class="tag bad" style="position:absolute;top:12px;right:12px;z-index:2">修复前</span>
+        <img src="img/shuyu/rec-leak.png" alt="推荐语把占位符 B 当成昵称">
+      </div>
+      <figcaption><b>例 1｜AI 把占位符「B」当真名写进推荐语</b><br>提示词里用 A / B 指代双方，模型直接把「B」输出成了对象名字。修复：把双方真实昵称传进提示词、禁止输出占位符，改后输出「山间读者，你和松间读者几乎说到一块去了」。</figcaption>
+    </figure>
+
+    <div class="grid" style="margin-top:18px">
+      <figure>
+        <div style="position:relative">
+          <span class="tag bad" style="position:absolute;top:12px;right:12px;z-index:2">修复前</span>
+          <img src="img/shuyu/tags-before.png" alt="标签照抄原文、情绪恒为中性">
+        </div>
+        <figcaption><b>例 2｜标签照抄原文，情绪恒为「中性」</b><br>主题 / 关键词输出成整句原文切片，情绪几乎全被判成「中性」，等于没提取。</figcaption>
+      </figure>
+      <figure>
+        <div style="position:relative">
+          <span class="tag good" style="position:absolute;top:12px;right:12px;z-index:2">修复后</span>
+          <img src="img/shuyu/tags-after.png" alt="标签变为抽象概念词，情绪有区分">
+        </div>
+        <figcaption><b>修复后</b> · 标签收敛成抽象概念词（世界 / 疑问 / 困惑 / 矛盾），情绪能真实区分积极 / 中性 / 消极。</figcaption>
+      </figure>
+    </div>
+    <p class="note">做法是两头夹：提示词限定「1~4 字抽象概念词、情绪只能三选一」，后端再做清洗（去切片、去重、归一情绪）。<b>只改提示词不够，只清洗也不够</b>——这是我在这两个例子里最大的收获。</p>
+  </section>
+
+  <section>
+    <div class="head"><span class="num">06</span><h2>已知短板</h2></div>
+    <ul class="plain">
+      <li>匹配效果依赖 AI 质量 → 需要调优 embedding 模型与相似度阈值。</li>
+      <li>读书墙靠 HTTP 轮询，非实时 → 下一步可改 WebSocket 推送。</li>
+      <li>只有摘录，没有全文阅读 → 需接入电子书源。</li>
+      <li>没有真实用户，指标全部来自内部演示，<b>不做效果类承诺</b>。</li>
+    </ul>
+  </section>
+
+  <footer>
+    李宛盈 · 北京邮电大学 数字媒体技术 2028 届<br>
+    截图为本地前后端联调环境的实际运行画面（2026-09），不含示意稿；项目为课程小组实践，未做真实用户测试。
+  </footer>
+</div>
+</body>
+</html>
